@@ -123,3 +123,27 @@ console.log(c) ;
 }
 **/
 ```
+##### How to use recursive diff
+**Node**: Please follow below steps for node.
+1. npm install recursive-diff 
+2. once installed, you can use following code block
+```
+var diff = require('recursive-diff');
+var ob1 = {a:1};
+var ob2 = {a:2};
+var delta = diff.getDiff(ob1,ob2);
+var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
+
+```
+**Browser**: Please follow below steps for using recursive-diff library in browser.
+1. include recursive-diff.js into your html file using script tag and then use it using window.diff as given below
+```
+<script type="text" src="recursive-diff.js"/>
+<script type="text/javascript">
+var ob1 = {a:1};
+var ob2 = {a:2};
+var delta = diff.getDiff(ob1,ob2);
+var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
+</script>
+```
+2. once installed, you can use following code block
