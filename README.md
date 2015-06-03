@@ -26,3 +26,100 @@ Api: Api has following two methods:
 
 #####Examples:
 ---------
+```
+var diff = require('recursive-diff');
+var a, b, c, delta ;
+//testing primitive data type
+a = 3 ;
+b = 10;
+delta = diff.getDiff(a, b);
+console.log(delta) ; // Output: {'/', {operation: update, value: 10}}
+c = diff.applyDiff(a, delta);
+console.log(c); //Output: 10
+ 
+//testing array
+a = [1,2] ;
+b = [1,30,40] ;
+delta = diff.getDiff(a, b);
+console.log(delta);
+/*** Output: 
+{
+    '/1' : {operation: update, value: 30},
+    '/2' : {operation: add, value: 40} 
+}
+
+***/
+c = diff.applyDiff(a, delta);
+console.log(c) ; //Output: [1,30,40]
+
+//testing object 
+a = {
+    a: '10',
+    b: '20',
+    c: '30'
+} ;
+b = {
+    a: '10',
+    b: '40'
+} ;
+delta = diff.getDiff(a, b);
+console.log(delta);
+/*** Output:
+{
+   '/b' : {operation: 'update', value:'40'},
+   '/c' : {operation: 'delete'}
+}
+**/
+c = diff.applyDiff(a, delta);
+console.log(c); //Output: {a:'10', 'b':40}
+
+//testing complex deep object
+a = {
+    b: [1,2,[3,4]],
+    c: {
+        c1 : 20,
+        c2 : {
+            c21: 'hello'
+        },
+        c3: 'India'
+    }
+} ;
+b = {
+    b: [1,2,[4]],
+    c: {
+        c1 : 20,
+        c2 : {
+            c21: 'hi',
+            c22: 'welcome'
+        },
+        c3: 'cosmic'
+    }
+} ;
+
+delta = diff.getDiff(a, b);
+console.log(delta);
+/*** Output:
+{ 
+  '/b/2/0': { operation: 'update', value: 4 },
+  '/b/2/1': { operation: 'delete' },
+  '/c/c2/c22': { operation: 'add', value: 'welcome' },
+  '/c/c2/c21': { operation: 'update', value: 'hi' },
+  '/c/c3': { operation: 'update', value: 'cosmic' } 
+}
+***/
+c = diff.applyDiff(a, delta);
+console.log(c) ;
+/***Output
+ {
+    b: [1,2,[4]],
+    c: {
+        c1 : 20,
+        c2 : {
+            c21: 'hi',
+            c22: 'welcome'
+        },
+        c3: 'cosmic'
+    }
+}
+**/
+```
