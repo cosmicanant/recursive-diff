@@ -53,7 +53,6 @@ Below are some more examples of path. Let 'ob' be an original object.
 2.  path = '/key1': This denotes that change made at ob.key1
 3.  path = '/key1/key2/key3': This denotes that change made at ob.key1.key2.key3
 
-
 ##### Api details: Api has following two methods:
 
 1. getDiff(ob1, ob2): getDiff will calculate the diff between ob1 and ob2 and return the diff object.
