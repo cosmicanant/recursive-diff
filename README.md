@@ -1,6 +1,14 @@
 # Recursive-Diff
 #####A JavaScript library to calculate diff between two variable where variable could be any valid JavaScript data type eg: string, Boolean, number, array or object
 
+The api returns a standard diff object having key, value pair where each key represent a path and each value represent a change object. Path denotes that where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
+
+```
+diff = {
+	path : {'operation': 'add/update/delete', 'value' : 'NewValue'}  /* Value represent ChangedValue */
+}
+```
+
 ##### How to use recursive diff
 **Node**: Please follow below steps for node.
 
@@ -26,22 +34,16 @@ var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
 </script>
 ```
 
-#####Description:
-The api returns a standard diff object having standard key, value pair where each key represent a path and each value represent a change object. Path denotes that where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
+**Description:** Diff object has key, value pairs , where key represents path and value represent change details. To understand path, consider unix directory structure. In unix system, '/' represents root directory whereas /var/lib represent lib directory which is located at path '/var/lib' relative to the root directory.
+So using similar path notation we can easily explain changes made at any level and for any data structure whether it be an object or a string or an array.
 
+Lets take an example of standard diff object. 
 ```
-diff = {
-	path : {'operation': 'add/update/delete', 'value' : 'NewValue'}  /* Value represent ChangedValue */
-}
+diffObject = {'/' : {'operation':'update', value:'newValue'}} 
 ```
+Above diffObject represents that at root path, update operation is performed and the new value is 'newValue'.
 
-Path are just like unix directory structure. eg: '/' represents root directory whereas /var/lib represent lib directory which is located at path '/var/lib' relative to the root directory.
-So using path we can easily define changes made at any level and for any data structure whether it be an object or string or array.
-
-Lets try to understand it through an example. 
-If diffObject = {'/' : {'operation':'update', value:'newValue'}} , It represents that at root path, update operation is performed and the new value is 'newValue'.
-
-If orginal object is 'ob', then below are the some example of path.
+Below are some more example of path. Let ob be original object.
 
 1.  path = '/': this denotes change made at top level, or the object itself 
 2.  path = '/key1': this denotes change made at ob.key1
