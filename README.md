@@ -36,16 +36,16 @@ var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
 </script>
 ```
 
-**Description:** Diff object has key, value pairs , where key represents path and value represent change details. To understand path, consider unix directory structure. In unix system, '/' represents root directory whereas /var/lib represent lib directory which is located at path '/var/lib' relative to the root directory.
+**Description:** Diff object has key, value pairs , where key represents path and value represents change details. To understand path, consider unix directory structure. In unix system, '/' represents root directory whereas '/var/lib' represents lib directory which is located at path '/var/lib' relative to the root directory.
 So using similar path notation we can easily explain changes made at any level and for any data structure whether it be an object or a string or an array.
 
-Lets take an example of standard diff object. 
+Let's take an example of standard diff object. 
 ```
 diffObject = {'/' : {'operation':'update', value:'newValue'}} 
 ```
 Above diff Object represents that at root path, update operation has been performed and the new value is 'newValue'.
 
-Below are some more example of path. Let 'ob' be an original object.
+Below are some more examples of path. Let 'ob' be an original object.
 
 1.  path = '/': This denotes that change made at top level, or the orginial object itself 
 2.  path = '/key1': This denotes that change made at ob.key1
