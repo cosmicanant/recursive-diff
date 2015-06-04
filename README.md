@@ -24,7 +24,7 @@ var delta = diff.getDiff(ob1,ob2);
 var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
 
 ```
-**Browser**: Include recursive-diff.js into your html file using script tag and then you can access recursive-diff api  as given below.
+**Browser**: Include recursive-diff library into your html file using script tag and then you can access recursive-diff api  as given below.
 
 ```
 <script type="text" src="index.js"/>
