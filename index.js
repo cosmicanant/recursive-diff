@@ -1,0 +1,201 @@
+/*
+ * recursive-diff 
+ *
+ * Copyright (C) 2015 Anant Shukla <anant.shukla.rkgit@gmail.com>
+ *
+ * Licensed under The MIT License (MIT) 
+ */
+;(function(){
+    var diff = (function(){
+        var getType = function( x ){
+            var type = typeof x ;
+            if(type === 'object' && Object.prototype.toString.call(x).match(/array/i) ){
+                type = 'array';
+            }
+            return type ;
+        }
+        
+        var findDiff =  function( ob1, ob2 , path , result){
+            var val1, val2, newpath,keys1,keys2,i  ;
+            var type1 = getType(ob1) ;
+            var type2 = getType(ob2) ;
+            //initialize some defaults 
+            if( path == null || typeof path !== 'string'){
+                path = '/' ; //initialize to root path
+            }
+            if (result == null || typeof result !== 'object'){
+                result = {} ;
+            }
+            //diff algo
+            if(ob1 == null || ob2 == null ){
+                if(ob1 !== ob2){
+                    if(ob1 == null){
+                        result[path] = {operation: 'add', value : ob2};
+                    }
+                    else{
+                        result[path] = {operation: 'delete'};
+                    } 
+                }
+            }
+            else if( type1 !== type2  || (type1 !== 'object' && type1 !== 'array') || (type2 !== 'object' && type2!=='array') ){
+                if(ob1 !== ob2){
+                    result[path] = {operation: 'update', value : ob2};
+                }
+            }
+            else{
+                keys1 = Object.keys(ob1);
+                keys2 = Object.keys(ob2);
+                for(i=0; i<keys2.length; i++){
+                    newpath = path === '/' ? path + keys2[i] : path + '/' + keys2[i];
+                    val1 = ob1[keys2[i]];
+                    val2 = ob2[keys2[i]];
+                    if(val1 == null && val2 != null){
+                        result[newpath] = {operation: 'add', value : val2} ;
+                    }
+                }
+                for(i=0; i<keys1.length; i++){
+                    newpath = path === '/' ? path + keys1[i] : path + '/' + keys1[i];
+                    val1 = ob1[keys1[i]];
+                    val2 = ob2[keys1[i]];
+            
+                    if(val1 == null || val2 == null){
+                        if(val1 == null && val2 == null){
+                            continue ;
+                        }
+                        else if(val1 == null){
+                            result[newpath] = {operation : 'add', value: val2 } ;
+                        }
+                        else{
+                            result[newpath] = {operation : 'delete'} ;
+                        }
+                    }
+                    else {
+                        if(getType(val1) !== getType( val2) ){
+                                result[newpath] = {operation : 'update', value: val2} ;
+                        }
+                        else {
+                            if(typeof val1 === 'object'){
+                                findDiff(val1, val2, newpath, result); 
+                            }
+                            /*else if(typeof val1 === 'function'){
+                                continue ; 
+                            }*/
+                            else{
+                                if(val1 !== val2){
+                                    result[newpath] = {operation : 'update', value: val2} ;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result ; 
+        }
+        var setValueByPath = function(ob, path, value ){
+            if(! path.match(/^\//)){
+                throw 'diff path is not valid';
+            }
+            var keys = path.split('/');
+            keys.shift();
+            var val = ob ;
+            var length = keys.length ;
+            for(var i=0; i < length; i++){
+                if(val == null || keys[i].length < 1){
+                    throw 'Invalid data';
+                }
+                if( i !== length -1 ){
+                    val = val[keys[i]];
+                }
+                else{
+                    val[keys[i]] = value ;
+                }
+            }
+            return ob;
+        }
+        
+        var deleteValueByPath = function(ob, path ){
+            var keys = path.split('/');
+            keys.shift(); //removing initial blank element ''
+            var val = ob ;
+            var length = keys.length ;
+            for(var i=0; i < length; i++){
+                if( i !== length -1){
+                    if(val[keys[i]] == null){
+                        throw 'invalid data';
+                    }
+                    val = val[keys[i]];
+                }
+                else{
+                    if(getType(val) === 'object'){
+                        delete val[keys[i]] ;
+                    }
+                    else{
+                        //val is array
+                        var index = parseInt(keys[i]);
+                        while(val.length > index){
+                            val.pop();
+                        }
+                    }
+                }
+            }
+            return ob;
+        }
+        
+        var applyDiff = function( ob1, diff){
+            var path, diffOb, op ;
+            if(diff == null){
+               throw 'No diff object is provided, Nothing to apply'; 
+            }
+            var keys = Object.keys(diff) ;
+            for(var i=0; i<keys.length; i++){
+                path =  keys[i];
+                diffOb = diff[keys[i]];
+                op = diffOb.operation ;
+                if(op.match(/add|update|delete/)){
+                    if(op === 'add'){
+                        if(path === '/'){
+                            ob1 = diffOb.value ;
+                            break ;
+                        }
+                        setValueByPath(ob1, path, diffOb.value); 
+                    }
+                    else if(op === 'update'){
+                        if(path === '/'){
+                            ob1 = diffOb.value ;
+                            break ;
+                        }
+                        setValueByPath(ob1, path, diffOb.value); 
+                    }
+                    else{
+                        if(path === '/'){
+                            ob1 = null ;
+                            break ;
+                        }
+                        deleteValueByPath(ob1, path); 
+                    }
+                }
+                else{
+                    throw 'malformed diff object';
+                }
+            }
+            return ob1 ;
+        }
+        
+        return {
+            getDiff : function( ob1, ob2){
+               var result = findDiff(ob1, ob2) ;
+               return result;
+            },
+            applyDiff : function(ob, diff){
+                var result = applyDiff(ob, diff);   
+                return result ;     
+            }
+        }
+    })();
+    if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
+        module.exports = diff;
+    }
+    else{
+        window.diff = diff ;
+    }    
+})();
