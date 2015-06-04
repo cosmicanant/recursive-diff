@@ -1,9 +1,9 @@
 # Recursive-Diff
-#####A JavaScript library to calculate diff between two variable where variable could be any valid JavaScript data type eg: string, Boolean, number, array or object
+
+##### A JavaScript library to calculate diff between two variable where variable could be any valid JavaScript data type eg: string, Boolean, number, array or object
 --------
 
 The api returns a standard diff object having key, value pair where each key represents a path and each value represents a change object. Path denotes where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
-
 
 ```
 diff = {
@@ -24,6 +24,7 @@ You can use recursive-diff library for node and browser both in the following wa
 
 1. npm install recursive-diff 
 2. once installed, you can use following code block
+
 ```
 var diff = require('recursive-diff');
 var ob1 = {a:1};
@@ -32,6 +33,7 @@ var delta = diff.getDiff(ob1,ob2);
 var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
 
 ```
+
 **Browser**: Include recursive-diff library into your html file using script tag and then you can access recursive-diff api  as given below.
 
 ```
