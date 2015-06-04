@@ -1,6 +1,32 @@
 # Recursive-Diff
 #####A JavaScript library to calculate diff between two variable where variable could be any valid JavaScript data type eg: string, Boolean, number, array or object
 
+##### How to use recursive diff
+**Node**: Please follow below steps for node.
+
+1. npm install recursive-diff 
+2. once installed, you can use following code block
+```
+var diff = require('recursive-diff');
+var ob1 = {a:1};
+var ob2 = {a:2};
+var delta = diff.getDiff(ob1,ob2);
+var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
+
+```
+**Browser**: Include recursive-diff.js into your html file using script tag and then you can access recursive-diff api  as given below.
+
+```
+<script type="text" src="index.js"/>
+<script type="text/javascript">
+var ob1 = {a:1};
+var ob2 = {a:2};
+var delta = diff.getDiff(ob1,ob2);
+var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
+</script>
+```
+
+#####Description:
 The api returns a standard diff object having standard key, value pair where each key represent a path and each value represent a change object. Path denotes that where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
 
 ```
@@ -125,28 +151,4 @@ console.log(c) ;
     }
 }
 **/
-```
-##### How to use recursive diff
-**Node**: Please follow below steps for node.
-
-1. npm install recursive-diff 
-2. once installed, you can use following code block
-```
-var diff = require('recursive-diff');
-var ob1 = {a:1};
-var ob2 = {a:2};
-var delta = diff.getDiff(ob1,ob2);
-var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
-
-```
-**Browser**: Include recursive-diff.js into your html file using script tag and then you can access recursive-diff api  as given below.
-
-```
-<script type="text" src="index.js"/>
-<script type="text/javascript">
-var ob1 = {a:1};
-var ob2 = {a:2};
-var delta = diff.getDiff(ob1,ob2);
-var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
-</script>
 ```
