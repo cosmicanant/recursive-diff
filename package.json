@@ -1,0 +1,34 @@
+{
+  "name": "recursive-diff",
+  "version": "0.0.0",
+  "description": "A library to find diff between any two variables where variables be any valid JavaScript data type eg: string, numeric, array or object",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cosmicanant/recursive-diff.git"
+  },
+  "keywords": [
+    "deep",
+    "diff",
+    "recursive",
+    "difference",
+    "tree",
+    "difference",
+    "variable",
+    "difference",
+    "track",
+    "change"
+  ],
+  "author": "Anant <anant.shukla.rkgit@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cosmicanant/recursive-diff/issues"
+  },
+  "homepage": "https://github.com/cosmicanant/recursive-diff"
+}
