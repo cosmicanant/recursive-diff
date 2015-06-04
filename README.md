@@ -1,7 +1,7 @@
 # Recursive-Diff
 #####A JavaScript library to calculate diff between two variable where variable could be any valid JavaScript data type eg: string, Boolean, number, array or object
 
-The api returns a standard diff object having key, value pair where each key represent a path and each value represent a change object. Path denotes that where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
+The api returns a standard diff object having key, value pair where each key represents a path and each value represents a change object. Path denotes where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
 
 ```
 diff = {
@@ -9,8 +9,10 @@ diff = {
 }
 ```
 
-##### How to use recursive diff
-**Node**: Please follow below steps for node.
+##### How to use recursive diff:
+You can use recursive-diff library for node and browser both in the following way.
+
+**Node**: Please follow below steps for using recursive-diff library with node.
 
 1. npm install recursive-diff 
 2. once installed, you can use following code block
@@ -41,13 +43,13 @@ Lets take an example of standard diff object.
 ```
 diffObject = {'/' : {'operation':'update', value:'newValue'}} 
 ```
-Above diffObject represents that at root path, update operation is performed and the new value is 'newValue'.
+Above diff Object represents that at root path, update operation has been performed and the new value is 'newValue'.
 
-Below are some more example of path. Let ob be original object.
+Below are some more example of path. Let 'ob' be an original object.
 
-1.  path = '/': this denotes change made at top level, or the object itself 
-2.  path = '/key1': this denotes change made at ob.key1
-3.  path = '/key1/key2/key3': this denotes change made at ob.key1.key2.key3
+1.  path = '/': This denotes that change made at top level, or the orginial object itself 
+2.  path = '/key1': This denotes that change made at ob.key1
+3.  path = '/key1/key2/key3': This denotes that change made at ob.key1.key2.key3
 
 
 #####Api details: Api has following two methods:
