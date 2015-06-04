@@ -139,7 +139,7 @@ var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
 **Browser**: Include recursive-diff.js into your html file using script tag and then you can access recursive-diff api  as given below.
 
 ```
-<script type="text" src="recursive-diff.js"/>
+<script type="text" src="index.js"/>
 <script type="text/javascript">
 var ob1 = {a:1};
 var ob2 = {a:2};
