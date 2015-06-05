@@ -3,6 +3,8 @@
 ##### A JavaScript library to calculate diff between two variable where variable could be any valid JavaScript data type eg: string, Boolean, number, array or object
 --------
 
+![recursive diff demo](./img/recursive-diff.png?raw=true "Sample Recursive Diff")
+
 The api returns a standard diff object having key, value pair where each key represents a path and each value represents a change object. Path denotes where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
 
 ```
