@@ -16,7 +16,7 @@
         }
         
         var findDiff =  function( ob1, ob2 , path , result){
-            var val1, val2, newpath,keys1,keys2,i  ;
+            var val1, val2, newpath, key  ;
             var type1 = getType(ob1) ;
             var type2 = getType(ob2) ;
             //initialize some defaults 
@@ -43,20 +43,10 @@
                 }
             }
             else{
-                keys1 = Object.keys(ob1);
-                keys2 = Object.keys(ob2);
-                for(i=0; i<keys2.length; i++){
-                    newpath = path === '/' ? path + keys2[i] : path + '/' + keys2[i];
-                    val1 = ob1[keys2[i]];
-                    val2 = ob2[keys2[i]];
-                    if(val1 == null && val2 != null){
-                        result[newpath] = {operation: 'add', value : val2} ;
-                    }
-                }
-                for(i=0; i<keys1.length; i++){
-                    newpath = path === '/' ? path + keys1[i] : path + '/' + keys1[i];
-                    val1 = ob1[keys1[i]];
-                    val2 = ob2[keys1[i]];
+                for(key in ob1){
+                    newpath = path === '/' ? path + key : path + '/' + key;
+                    val1 = ob1[key];
+                    val2 = ob2[key];
             
                     if(val1 == null || val2 == null){
                         if(val1 == null && val2 == null){
@@ -86,6 +76,14 @@
                                 }
                             }
                         }
+                    }
+                }
+                for(key in ob2){
+                    newpath = path === '/' ? path + key : path + '/' + key;
+                    val1 = ob1[key];
+                    val2 = ob2[key];
+                    if(val1 == null && val2 != null){
+                        result[newpath] = {operation: 'add', value : val2} ;
                     }
                 }
             }
@@ -130,7 +128,6 @@
                         delete val[keys[i]] ;
                     }
                     else{
-                        //val is array
                         var index = parseInt(keys[i]);
                         while(val.length > index){
                             val.pop();
@@ -146,10 +143,9 @@
             if(diff == null){
                throw 'No diff object is provided, Nothing to apply'; 
             }
-            var keys = Object.keys(diff) ;
-            for(var i=0; i<keys.length; i++){
-                path =  keys[i];
-                diffOb = diff[keys[i]];
+            for(var key in diff ){
+                path =  key;
+                diffOb = diff[key];
                 op = diffOb.operation ;
                 if(op.match(/add|update|delete/)){
                     if(op === 'add'){
