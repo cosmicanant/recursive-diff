@@ -5,7 +5,7 @@
 
 ![recursive diff demo](./img/recursive-diff.png?raw=true "Sample Recursive Diff")
 
-The api returns a standard diff object having key, value pair where each key represents a path and each value represents a change object. Path denotes where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
+The api returns a standard diff object having key, value pair where each key represents a '/' separated path and each value represents a change object. Path denotes where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
 
 ```
 diff = {
@@ -15,14 +15,14 @@ diff = {
 
 ##### Api details: It has following two methods:
 
-1. getDiff(ob1, ob2): getDiff will calculate the diff between 'ob1' and 'ob2' and return the diff object.
-2. applyDiff (ob1, diff): applyDiff will take 'ob1' object and apply 'diff' object to transform 'ob1' into 'ob2'.
+1. **getDiff(ob1, ob2)**: getDiff will calculate the diff between 'ob1' and 'ob2' and return the diff object.
+2. **applyDiff (ob1, diff)**: applyDiff will take 'ob1' object and apply 'diff' object to transform 'ob1' into 'ob2'.
 
 ##### How to use recursive diff:
 
 You can use recursive-diff library for node and browser both in the following way.
 
-**Node**: Please follow below steps for using recursive-diff library with node.
+**Using recursive diff library in Node**: Please follow below steps for using recursive-diff library with node.
 
 1. npm install recursive-diff 
 2. once installed, you can use following code block
@@ -36,7 +36,7 @@ var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
 
 ```
 
-**Browser**: Include recursive-diff library into your html file using script tag and then you can access recursive-diff api  as given below.
+**Using recursive diff library in Browser**: Include recursive-diff library into your html file using script tag and then you can access recursive-diff api  as given below.
 
 ```
 <script type="text" src="index.js"/>
@@ -47,22 +47,6 @@ var delta = diff.getDiff(ob1,ob2);
 var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
 </script>
 ```
-
-**Description:** Diff object has key, value pairs , where key represents path and value represents change details. To understand path, consider unix directory structure. In unix system, '/' represents root directory whereas '/var/lib' represents lib directory which is located at path '/var/lib' relative to the root directory.
-So using similar path notation we can easily explain changes made at any level and for any data structure whether it be an object or a string or an array.
-
-Let's take an example of standard diff object. 
-```
-diffObject = {'/' : {'operation':'update', value:'newValue'}} 
-```
-Above diff Object represents that at root path, update operation has been performed and the new value is 'newValue'.
-
-Below are some more examples of path. Let 'ob' be an original object.
-
-1.  path = '/': This denotes that change made at top level, or the orginial object itself 
-2.  path = '/key1': This denotes that change made at ob.key1
-3.  path = '/key1/key2/key3': This denotes that change made at ob.key1.key2.key3
-
 
 #####Examples:
 ---------
