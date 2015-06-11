@@ -29,11 +29,14 @@
             //diff algo
             if(ob1 == null || ob2 == null ){
                 if(ob1 !== ob2){
-                    if(ob1 == null){
+                    if(type1 === 'undefined'){
                         result[path] = {operation: 'add', value : ob2};
                     }
-                    else{
+                    else if(type2 === 'undefined'){
                         result[path] = {operation: 'delete'};
+                    }
+                    else{
+                        result[path] = {operation: 'update', value: ob2};
                     } 
                 }
             }
@@ -49,14 +52,16 @@
                     val2 = ob2[key];
             
                     if(val1 == null || val2 == null){
-                        if(val1 == null && val2 == null){
-                            continue ;
-                        }
-                        else if(val1 == null){
-                            result[newpath] = {operation : 'add', value: val2 } ;
-                        }
-                        else{
-                            result[newpath] = {operation : 'delete'} ;
+                        if(val1 !== val2){
+                            if(typeof val1 === 'undefined'){
+                                result[newpath] = {operation: 'add', value : val2};
+                            }
+                            else if(typeof val2 === 'undefined'){
+                                result[newpath] = {operation: 'delete'};
+                            }
+                            else{
+                                result[newpath] = {operation: 'update', value: val2};
+                            }    
                         }
                     }
                     else {
@@ -67,9 +72,6 @@
                             if(typeof val1 === 'object'){
                                 findDiff(val1, val2, newpath, result); 
                             }
-                            /*else if(typeof val1 === 'function'){
-                                continue ; 
-                            }*/
                             else{
                                 if(val1 !== val2){
                                     result[newpath] = {operation : 'update', value: val2} ;
@@ -82,8 +84,10 @@
                     newpath = path === '/' ? path + key : path + '/' + key;
                     val1 = ob1[key];
                     val2 = ob2[key];
-                    if(val1 == null && val2 != null){
-                        result[newpath] = {operation: 'add', value : val2} ;
+                    if(val1 !== val2){
+                        if(typeof val1 === 'undefined'){
+                            result[newpath] = {operation: 'add', value : val2} ;
+                        }
                     }
                 }
             }
