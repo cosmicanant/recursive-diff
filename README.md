@@ -13,13 +13,15 @@ diff = {
 }
 ```
 
-##### Api details: It has following two methods:
+## Api details: 
 
-1. **getDiff(ob1, ob2)**: getDiff would take two arguments and return their diff.
-2. **applyDiff (ob1, diff)**: applyDiff would take two arguments: 1)original object, 2)diff object and applies diff object on original object and return the resulting object.
+**getDiff(ob1, ob2):** getDiff would take two arguments and return their diff.
 
+**applyDiff (ob1, diff):** applyDiff would take two arguments: 1)original object, 2)diff object and applies diff object on original object and return the resulting object.
 
-**Using recursive diff library in Node**: First you need to install recursive diff libray into Node using  **npm install recursive-diff** and then you can use following code block.
+##Using recursive diff library in Node:
+
+First you need to install recursive diff libray into Node using  **npm install recursive-diff** and then you can use following code block.
 
 ```
 var diff = require('recursive-diff');
@@ -30,7 +32,9 @@ var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
 
 ```
 
-**Using recursive diff library in Browser**: Include recursive-diff library into your html file using script tag and then you can access recursive-diff api  as below.
+##Using recursive diff library in Browser: 
+
+Include recursive-diff library into your html file using script tag and then you can access recursive-diff api  as below.
 
 ```
 <script type="text" src="index.js"/>
@@ -42,7 +46,7 @@ var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
 </script>
 ```
 
-##### Examples:
+## Examples:
 ---------
 ```
 var diff = require('recursive-diff');
