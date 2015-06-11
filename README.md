@@ -50,6 +50,9 @@ var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
 </script>
 ```
 
+## Tests
+You can run **npm test**
+
 ## Examples:
 ---------
 ```
