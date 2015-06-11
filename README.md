@@ -19,6 +19,10 @@ diff = {
 
 **applyDiff (ob1, diff):** applyDiff would take two arguments: 1)original object, 2)diff object and applies diff object on original object and return the resulting object.
 
+## ChangeLog
+**0.1.1** - Added support of **null** value for any key in a object.
+
+
 ##Using recursive diff library in Node:
 
 First you need to install recursive diff libray into Node using  **npm install recursive-diff** and then you can use following code block.
