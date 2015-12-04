@@ -22,7 +22,7 @@ diff = {
 ## ChangeLog
 **0.1.1** - Added support of **null** value for any key in a object.
 
-**0.1.2** - Added support of an Optional  **callBack** function in applyDiff method and improving tests. Please check the sample code to know how to use callback. Contribution by: Isabella Cerbino ( https://github.com/IsabellaCerbino ) 
+**0.1.2** - Added support of an Optional  **callBack** function in applyDiff method and improving tests. Please check the sample code to know how to use callback. Thanks to Isabella Cerbino's contribution ( https://github.com/IsabellaCerbino ) .
 
 ##Using recursive diff library in Node:
 
