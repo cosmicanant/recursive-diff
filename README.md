@@ -15,13 +15,14 @@ diff = {
 
 ## Api details: 
 
-**getDiff(ob1, ob2):** getDiff would take two arguments and return their diff.
+**getDiff(ob1, ob2):** getDiff takes two arguments and return their diff.
 
-**applyDiff (ob1, diff):** applyDiff would take two arguments: 1)original object, 2)diff object and applies diff object on original object and return the resulting object.
+**applyDiff (ob1, diff, callback ):** applyDiff takes three arguments: 1. original object, 2. diff object 3. callback function (optional). This method returns a new object after applying diff on original object. Callback can give a chance to API user so that object can be stamped with some label or a new properties can be added which may be useful to trace the changes while traversing the resulting object. 
 
 ## ChangeLog
 **0.1.1** - Added support of **null** value for any key in a object.
 
+**0.1.2** - Added support of an Optional  **callBack** function in applyDiff method and improving tests. Please check the sample code to know how to use callback. Contribution by: Isabella Cerbino ( https://github.com/IsabellaCerbino ) 
 
 ##Using recursive diff library in Node:
 
@@ -56,6 +57,30 @@ You can run **npm test**
 ## Examples:
 ---------
 ```
+//how to use optional callback function in applyDiff function
+var a = { 'a1' : { 'a11' : { 'a111' : 'old value'} } };
+var b = { 'a1' : { 'a11' : {'a111' : 'updated value' } } };
+var callback = function(ob){
+   if(ob instance of Object){
+   	ob.__isVisited = true;
+   }
+}
+diffOb = diff.getDiff( a, b) ;
+var c = diff.applyDiff(a, diffOb, callBack) ;
+
+// 'c' value will look like:
+c = {
+    '__isVisited' : true,
+    'a1' : {
+        '__isVisited' : true,
+        'a11' : {
+            '__isVisited' : true,
+            'a111' : 'old value'
+        }
+    }
+}
+
+//Other examples 
 var diff = require('recursive-diff');
 var a, b, c, delta ;
 //testing primitive data type
