@@ -13,7 +13,7 @@
                 type = 'array';
             }
             return type ;
-        }
+        };
         
         var findDiff =  function( ob1, ob2 , path , result){
             var val1, val2, newpath, key  ;
@@ -40,7 +40,7 @@
                     } 
                 }
             }
-            else if( type1 !== type2  || (type1 !== 'object' && type1 !== 'array') || (type2 !== 'object' && type2!=='array') ){
+            else if( type1 !== type2  || (type1 !== 'object' && type1 !== 'array') || (type2 !== 'object' && type2 !== 'array') ){
                 if(ob1 !== ob2){
                     result[path] = {operation: 'update', value : ob2};
                 }
@@ -92,8 +92,8 @@
                 }
             }
             return result ; 
-        }
-        var setValueByPath = function(ob, path, value ){
+        };
+        var setValueByPath = function(ob, path, value, visitorCallback){
             if(! path.match(/^\//)){
                 throw 'diff path is not valid';
             }
@@ -107,13 +107,16 @@
                 }
                 if( i !== length -1 ){
                     val = val[keys[i]];
+                    if(visitorCallback){
+                        visitorCallback(val);
+                    }
                 }
                 else{
-                    val[keys[i]] = value ;
+                    val[keys[i]] = value;
                 }
             }
             return ob;
-        }
+        };
         
         var deleteValueByPath = function(ob, path ){
             var keys = path.split('/');
@@ -140,9 +143,9 @@
                 }
             }
             return ob;
-        }
+        };
         
-        var applyDiff = function( ob1, diff){
+        var applyDiff = function( ob1, diff, visitorCallback){
             var path, diffOb, op ;
             if(diff == null){
                throw 'No diff object is provided, Nothing to apply'; 
@@ -157,14 +160,14 @@
                             ob1 = diffOb.value ;
                             break ;
                         }
-                        setValueByPath(ob1, path, diffOb.value); 
+                        setValueByPath(ob1, path, diffOb.value, visitorCallback); 
                     }
                     else if(op === 'update'){
                         if(path === '/'){
                             ob1 = diffOb.value ;
                             break ;
                         }
-                        setValueByPath(ob1, path, diffOb.value); 
+                        setValueByPath(ob1, path, diffOb.value, visitorCallback); 
                     }
                     else{
                         if(path === '/'){
@@ -179,18 +182,18 @@
                 }
             }
             return ob1 ;
-        }
+        };
         
         return {
             getDiff : function( ob1, ob2){
                var result = findDiff(ob1, ob2) ;
                return result;
             },
-            applyDiff : function(ob, diff){
-                var result = applyDiff(ob, diff);   
+            applyDiff : function(ob, diff, visitorCallback){
+                var result = applyDiff(ob, diff, visitorCallback);
                 return result ;     
             }
-        }
+        };
     })();
     if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
         module.exports = diff;

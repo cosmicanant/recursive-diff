@@ -1,17 +1,20 @@
 {
   "name": "recursive-diff",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Find diff between any two variables where variables be any valid JavaScript data type like string, numeric, array or object",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "node test/test.js"
+    "test": "./node_modules/mocha/bin/mocha test/test.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/cosmicanant/recursive-diff.git"
+  },
+  "devDependencies": {
+    "mocha": "~2.3.3"
   },
   "keywords": [
     "deep",
