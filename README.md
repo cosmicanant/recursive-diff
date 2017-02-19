@@ -57,30 +57,8 @@ You can run **npm test**
 ## Examples:
 ---------
 ```
-//how to use optional callback function in applyDiff function
-var a = { 'a1' : { 'a11' : { 'a111' : 'old value'} } };
-var b = { 'a1' : { 'a11' : {'a111' : 'updated value' } } };
-var callback = function(ob){
-   if(ob instance of Object){
-   	ob.__isVisited = true;
-   }
-}
-diffOb = diff.getDiff( a, b) ;
-var c = diff.applyDiff(a, diffOb, callBack) ;
 
-// 'c' value will look like:
-c = {
-    '__isVisited' : true,
-    'a1' : {
-        '__isVisited' : true,
-        'a11' : {
-            '__isVisited' : true,
-            'a111' : 'old value'
-        }
-    }
-}
-
-//Other examples 
+//examples 
 var diff = require('recursive-diff');
 var a, b, c, delta ;
 //testing primitive data type
@@ -176,4 +154,28 @@ console.log(c) ;
     }
 }
 **/
+
+//how to use optional callback function in applyDiff function
+var a = { 'a1' : { 'a11' : { 'a111' : 'old value'} } };
+var b = { 'a1' : { 'a11' : {'a111' : 'updated value' } } };
+var callback = function(ob){
+   if(ob instance of Object){
+   	ob.__isVisited = true;
+   }
+}
+diffOb = diff.getDiff( a, b) ;
+var c = diff.applyDiff(a, diffOb, callBack) ;
+
+// 'c' value will look like:
+c = {
+    '__isVisited' : true,
+    'a1' : {
+        '__isVisited' : true,
+        'a11' : {
+            '__isVisited' : true,
+            'a111' : 'old value'
+        }
+    }
+}
+
 ```
