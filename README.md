@@ -20,9 +20,13 @@ diff = {
 **applyDiff (ob1, diff, callback ):** applyDiff takes three arguments: 1. original object, 2. diff object 3. callback function (optional). This method returns a new object after applying diff on original object. Callback can give a chance to API user so that object can be stamped with some label or a new properties can be added which may be useful to trace the changes while traversing the resulting object. 
 
 ## ChangeLog
-**0.1.1** - Added support of **null** value for any key in a object.
+- **0.1.1** - Added support of **null** value for any key in a object.
 
-**0.1.2** - Added support of an Optional  **callBack** function in applyDiff method and improving tests. Please check the sample code to know how to use callback. Thanks to Isabella Cerbino's contribution ( https://github.com/IsabellaCerbino ) .
+- **0.1.2** - Added support of an Optional  **callBack** function in applyDiff method and improving tests. Please check the sample code to know how to use callback. Thanks to Isabella Cerbino's contribution ( https://github.com/IsabellaCerbino ) .
+
+- **0.2** - Improved error handling, included stack trace in errors. Credits: Giannis Poulis
+( https://github.com/ioanniswd )
+
 
 ##Using recursive diff library in Node:
 
