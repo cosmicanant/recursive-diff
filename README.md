@@ -24,7 +24,7 @@ diff = {
 
 - **0.1.2** - Added support of an Optional  **callBack** function in applyDiff method and improving tests. Please check the sample code to know how to use callback. Thanks to Isabella Cerbino's contribution ( https://github.com/IsabellaCerbino ) .
 
-- **0.1.3** - Improved error handling, included stack trace in errors. Credits: Giannis Poulis
+- **0.1.4** - Improved error handling, included stack trace in errors. Credits: Giannis Poulis
 ( https://github.com/ioanniswd )
 
 
