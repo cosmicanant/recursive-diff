@@ -1,9 +1,9 @@
 /*
- * recursive-diff 
+ * recursive-diff
  *
  * Copyright (C) 2015 Anant Shukla <anant.shukla.rkgit@gmail.com>
  *
- * Licensed under The MIT License (MIT) 
+ * Licensed under The MIT License (MIT)
  */
 ;(function(){
     var diff = (function(){
@@ -14,12 +14,12 @@
             }
             return type ;
         };
-        
+
         var findDiff =  function( ob1, ob2 , path , result){
             var val1, val2, newpath, key  ;
             var type1 = getType(ob1) ;
             var type2 = getType(ob2) ;
-            //initialize some defaults 
+            //initialize some defaults
             if( path == null || typeof path !== 'string'){
                 path = '/' ; //initialize to root path
             }
@@ -37,7 +37,7 @@
                     }
                     else{
                         result[path] = {operation: 'update', value: ob2};
-                    } 
+                    }
                 }
             }
             else if( type1 !== type2  || (type1 !== 'object' && type1 !== 'array') || (type2 !== 'object' && type2 !== 'array') ){
@@ -50,7 +50,7 @@
                     newpath = path === '/' ? path + key : path + '/' + key;
                     val1 = ob1[key];
                     val2 = ob2[key];
-            
+
                     if(val1 == null || val2 == null){
                         if(val1 !== val2){
                             if(typeof val1 === 'undefined'){
@@ -61,7 +61,7 @@
                             }
                             else{
                                 result[newpath] = {operation: 'update', value: val2};
-                            }    
+                            }
                         }
                     }
                     else {
@@ -70,7 +70,7 @@
                         }
                         else {
                             if(typeof val1 === 'object'){
-                                findDiff(val1, val2, newpath, result); 
+                                findDiff(val1, val2, newpath, result);
                             }
                             else{
                                 if(val1 !== val2){
@@ -91,20 +91,20 @@
                     }
                 }
             }
-            return result ; 
+            return result ;
         };
         var setValueByPath = function(ob, path, value, visitorCallback){
-            if(! path.match(/^\//)){
-                throw 'diff path is not valid';
+            if(!path.match(/^\//)){
+                throw new Error('Diff path: "' + path + '" is not valid');
             }
             var keys = path.split('/');
             keys.shift();
-            var val = ob ;
+            var val = ob;
             var length = keys.length ;
             for(var i=0; i < length; i++){
-                if(val == null || keys[i].length < 1){
-                    throw 'Invalid data';
-                }
+                if (!val) throw new Error('Invalid path: "' + path + '" for object: ' + JSON.stringify(ob, null, 2));
+                else if(keys[i].length < 1) throw new Error('Invalid path: "' + path + '" for object: ' + JSON.stringify(ob, null, 2));
+
                 if( i !== length -1 ){
                     val = val[keys[i]];
                     if(visitorCallback){
@@ -117,7 +117,7 @@
             }
             return ob;
         };
-        
+
         var deleteValueByPath = function(ob, path ){
             var keys = path.split('/');
             keys.shift(); //removing initial blank element ''
@@ -125,8 +125,8 @@
             var length = keys.length ;
             for(var i=0; i < length; i++){
                 if( i !== length -1){
-                    if(val[keys[i]] == null){
-                        throw 'invalid data';
+                    if(!val[keys[i]]){
+                        throw new Error('Invalid path: "' + path + '" for object: ' + JSON.stringify(ob, null, 2));
                     }
                     val = val[keys[i]];
                 }
@@ -144,12 +144,10 @@
             }
             return ob;
         };
-        
+
         var applyDiff = function( ob1, diff, visitorCallback){
             var path, diffOb, op ;
-            if(diff == null){
-               throw 'No diff object is provided, Nothing to apply'; 
-            }
+            if (!diff) throw new Error('No diff object is provided, Nothing to apply');
             for(var key in diff ){
                 path =  key;
                 diffOb = diff[key];
@@ -160,30 +158,28 @@
                             ob1 = diffOb.value ;
                             break ;
                         }
-                        setValueByPath(ob1, path, diffOb.value, visitorCallback); 
+                        setValueByPath(ob1, path, diffOb.value, visitorCallback);
                     }
                     else if(op === 'update'){
                         if(path === '/'){
                             ob1 = diffOb.value ;
                             break ;
                         }
-                        setValueByPath(ob1, path, diffOb.value, visitorCallback); 
+                        setValueByPath(ob1, path, diffOb.value, visitorCallback);
                     }
                     else{
                         if(path === '/'){
                             ob1 = null ;
                             break ;
                         }
-                        deleteValueByPath(ob1, path); 
+                        deleteValueByPath(ob1, path);
                     }
                 }
-                else{
-                    throw 'malformed diff object';
-                }
+                else throw new Error('Invalid operation: "' + op + '"');
             }
             return ob1 ;
         };
-        
+
         return {
             getDiff : function( ob1, ob2){
                var result = findDiff(ob1, ob2) ;
@@ -191,7 +187,7 @@
             },
             applyDiff : function(ob, diff, visitorCallback){
                 var result = applyDiff(ob, diff, visitorCallback);
-                return result ;     
+                return result ;
             }
         };
     })();
@@ -200,5 +196,5 @@
     }
     else{
         window.diff = diff ;
-    }    
+    }
 })();
