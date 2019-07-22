@@ -27,6 +27,7 @@ diff = {
 - **0.1.4** - Improved error handling, included stack trace in errors. Credits: Giannis Poulis
 ( https://github.com/ioanniswd )
 
+- **0.2.0** - Added support for `DATE` type
 
 ##Using recursive diff library in Node:
 

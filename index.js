@@ -9,8 +9,12 @@
     var diff = (function(){
         var getType = function( x ){
             var type = typeof x ;
-            if(type === 'object' && Object.prototype.toString.call(x).match(/array/i) ){
-                type = 'array';
+            if(type === 'object' ){
+                if(x instanceof Array ) {
+                    type = 'array';
+                } else if( x instanceof Date) {
+                    type = 'date';
+                }
             }
             return type ;
         };
@@ -40,9 +44,15 @@
                     }
                 }
             }
-            else if( type1 !== type2  || (type1 !== 'object' && type1 !== 'array') || (type2 !== 'object' && type2 !== 'array') ){
+            else if( type1 !== type2 || ( type1 !== 'object' && type1 !== 'array' ) ){
                 if(ob1 !== ob2){
-                    result[path] = {operation: 'update', value : ob2};
+                    if( type1 === type2 && type1 === 'date') {
+                        if( ob1.getTime() !== ob2.getTime() ) {
+                            result[path] = {operation: 'update', value : ob2};
+                        }
+                    } else {
+                        result[path] = {operation: 'update', value : ob2};
+                    }
                 }
             }
             else{
@@ -75,7 +85,7 @@
                             else{
                                 if(val1 !== val2){
                                     result[newpath] = {operation : 'update', value: val2} ;
-                                }
+                                } 
                             }
                         }
                     }
