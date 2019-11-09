@@ -5,6 +5,7 @@
  *
  * Licensed under The MIT License (MIT)
  */
+/* eslint-disable */
 ;(function(){
     var diff = (function(){
         var getType = function( x ){

@@ -1,78 +1,77 @@
-var expect = require('chai').expect;
-var diff = require('../index.js');
+const { expect } = require('chai');
+const diff = require('../src/recursive-diff');
 
-describe("diff error tests", function() {
+describe('diff error tests', () => {
+  it('Invalid delta', () => {
+    const obj = {
+      c: '10',
+      w: '20',
+    };
 
-    it('Invalid delta', function() {
-      var obj = {
-        c: '10',
-        w: '20'
-      };
+    const delta = null;
 
-      var delta = null;
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'No diff object is provided, Nothing to apply');
+  });
 
-      expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'No diff object is provided, Nothing to apply');
-    });
+  it('Invalid operation', () => {
+    const obj = {
+      c: '10',
+      w: '20',
+    };
 
-    it('Invalid operation', function() {
-      var obj = {
-        c: '10',
-        w: '20'
-      };
+    const delta = {
+      '/b': { operation: 'invalid' },
+    };
 
-      var delta = {
-        '/b': {operation: 'invalid'}
-      };
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid operation: "invalid"');
+  });
 
-      expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid operation: "invalid"');
-    });
+  it('Invalid path (Not starting with slash)', () => {
+    const obj = {
+      c: '10',
+      w: '20',
+    };
 
-    it('Invalid path (Not starting with slash)', function() {
-      var obj = {
-        c: '10',
-        w: '20'
-      };
+    const delta = {
+      not_valid: { operation: 'update' },
+    };
 
-      var delta = {
-        'not_valid': {operation: 'update'}
-      };
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Diff path: "not_valid" is not valid');
+  });
 
-      expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Diff path: "not_valid" is not valid');
-    });
+  it('Invalid value for operation', () => {
+    const obj = null;
 
-    it('Invalid value for operation', function() {
-      var obj = null;
+    const delta = {
+      '/c': { operation: 'update', value: 'some value' },
+    };
 
-      var delta = {
-        '/c': {operation: 'update', value: 'some value'}
-      };
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid path: "/c" for object: null');
+  });
 
-      expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid path: "/c" for object: null');
-    });
+  it('Invalid path (One key in path is empty)', () => {
+    const obj = {
+      c: '10',
+      w: '20',
+    };
 
-    it('Invalid path (One key in path is empty)', function() {
-      var obj = {
-        c: '10',
-        w: '20'
-      };
+    const delta = {
+      '/c//w': { operation: 'update' },
+    };
 
-      var delta = {
-        '/c//w': {operation: 'update'}
-      };
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, `Invalid path: "/c//w" for object: ${JSON.stringify(obj, null, 2)}`);
+  });
 
-      expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid path: "/c//w" for object: ' + JSON.stringify(obj, null, 2));
-    });
+  it('Delete for invalid path for object', () => {
+    const obj = {
+      c: '10',
+      w: '20',
+    };
 
-    it('Delete for invalid path for object', function() {
-      var obj = {
-        c: '10',
-        w: '20'
-      };
+    const delta = {
+      '/not_found/w': { operation: 'delete' },
+    };
 
-      var delta = {
-        '/not_found/w': {operation: 'delete'}
-      };
-
-      expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid path: "/not_found/w" for object: ' + JSON.stringify(obj, null, 2));
-    });
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, `Invalid path: "/not_found/w" for object: ${JSON.stringify(obj, null, 2)}`);
+  });
 });
