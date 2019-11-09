@@ -1,3 +1,8 @@
+ [![NPM Version][npm-image]][npm-url]
+  [![NPM Downloads][downloads-image]][downloads-url]
+  [![Build][travis-image]][travis-url]
+  [![Coverage Status][coveralls-image]][coveralls-url]
+
 # Recursive-Diff
 
 ##### A JavaScript library to calculate diff between two variable where variable could be any valid JavaScript data type eg: string, Boolean, number, array or object
@@ -184,3 +189,12 @@ c = {
 }
 
 ```
+
+[npm-image]: https://img.shields.io/npm/v/recursive-diff.svg
+[npm-url]: https://npmjs.org/package/recursive-diff
+[downloads-image]: https://img.shields.io/npm/dm/recursive-diff.svg
+[downloads-url]: https://npmjs.org/package/recursive-diff
+[travis-image]: https://img.shields.io/travis/cosmicanant/recursive-diff/master.svg
+[travis-url]: https://travis-ci.org/cosmicanant/recursive-diff
+[coveralls-image]: https://coveralls.io/repos/github/cosmicanant/recursive-diff/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/cosmicanant/recursive-diff?branch=master
