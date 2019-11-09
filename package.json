@@ -3,7 +3,8 @@
   "version": "0.2.0",
   "description": "Find diff between any two variables where variables be any valid JavaScript data type like string, numeric, array or object",
   "main": "src/recursive-diff.js",
-  "browser": "dist/recursive-diff.js",
+  "browser": "dist/recursive-diff.min.js",
+  "unpkg": "dist/recursive-diff.min.js",
   "directories": {
     "test": "test"
   },
@@ -11,6 +12,7 @@
     "test": "NODE_ENV=test mocha --timeout 10000 test/**/*.spec.js --reporter spec",
     "lint": "eslint src",
     "build": "webpack --config webpack.config.js",
+    "build:dev": "webpack --config webpack.dev.config.js",
     "coverage": "nyc --reporter=lcov npm run test"
   },
   "repository": {
@@ -25,6 +27,7 @@
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
+    "pre-commit": "^1.2.2",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
@@ -55,5 +58,11 @@
   "bugs": {
     "url": "https://github.com/cosmicanant/recursive-diff/issues"
   },
-  "homepage": "https://github.com/cosmicanant/recursive-diff"
+  "homepage": "https://github.com/cosmicanant/recursive-diff",
+  "precommit": {
+    "run": [
+      "lint",
+      "test"
+    ]
+  }
 }
