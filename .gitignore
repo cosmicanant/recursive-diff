@@ -1,2 +1,5 @@
 node_modules
 .prettierrc
+.nyc_output
+coverage
+test.html

@@ -1,8 +1,7 @@
 const assert = require('assert');
 const diff = require('../src/recursive-diff');
 
-let a; let b; let delta; let
-  c;
+let a; let b; let delta; let c;
 
 describe('diff tests', () => {
   it('testing primitive data type', () => {
@@ -31,6 +30,96 @@ describe('diff tests', () => {
     };
     delta = diff.getDiff(a, b);
     c = diff.applyDiff(a, delta);
+    assert.deepEqual(b, c);
+  });
+
+  it('testing object with different types', () => {
+    a = {
+      a: 10,
+      b: '20',
+    };
+    b = {
+      a: '10',
+      b: '40',
+    };
+    delta = diff.getDiff(a, b);
+    c = diff.applyDiff(a, delta);
+    assert.deepEqual(b, c);
+  });
+
+
+  it('testing Null ', () => {
+    a = null;
+    b = {
+      a: '10',
+      b: '40',
+    };
+    delta = diff.getDiff(a, b);
+    c = diff.applyDiff(a, delta);
+    assert.deepEqual(b, c);
+  });
+
+  it('testing Undefined ', () => {
+    let d;
+    const e = {
+      a: '10',
+      b: '40',
+    };
+    delta = diff.getDiff(d, e);
+    c = diff.applyDiff(d, delta);
+    assert.deepEqual(e, c);
+
+    delta = diff.getDiff(e, d);
+    c = diff.applyDiff(e, delta);
+    assert.deepEqual(d, c);
+  });
+
+  it('testing Undefined, once more :) ', () => {
+    a = {
+      a: 4,
+      b: undefined,
+    };
+    b = {
+      a: undefined,
+      b: '40',
+    };
+    delta = diff.getDiff(a, b);
+    c = diff.applyDiff(a, delta);
+    assert.equal(b.a, c.a);// to check undefined
+    assert.equal(b.b, c.b);
+  });
+
+  it('testing Undefined and null together ;)', () => {
+    a = {
+      a: 4,
+      b: undefined,
+    };
+    b = {
+      a: null,
+      b: '40',
+    };
+    delta = diff.getDiff(a, b);
+    c = diff.applyDiff(a, delta);
+    assert.equal(b.a, c.a);// to check undefined
+    assert.equal(b.b, c.b);
+  });
+
+  it('testing visitor callback', () => {
+    // TODO: use sinon.spy to count function call
+    a = {
+      a: 4,
+      b: {
+        c: 11,
+      },
+    };
+    b = {
+      a: 'hello',
+      b: {
+        d: 12,
+      },
+    };
+    delta = diff.getDiff(a, b);
+    c = diff.applyDiff(a, delta, () => {});
     assert.deepEqual(b, c);
   });
 
@@ -88,15 +177,9 @@ describe('diff tests', () => {
         },
         c3: 'cosmic',
       },
+      d: null,
     };
-
-    // console.log('Object1 is:')
-    // console.log(a);
-    // console.log('Object2 is:')
-    // console.log(b);
     delta = diff.getDiff(a, b);
-    // console.log('Diff calculated is:')
-    // console.log(delta);
     c = diff.applyDiff(a, delta);
     assert.deepEqual(b, c);
   });
