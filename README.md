@@ -90,10 +90,10 @@ assert.deepEqual(c, y);
 
 ## Using recursive diff library in the Browser: 
 
-`'dist/recursive-diff.min.js'` can be directly used into a HTML page. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
+`'dist/recursive-diff.min.js'` can be directly injected into a HTML page using the URL `https://unpkg.com/recursive-diff@1.0.0/dist/recursive-diff.min.js`. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
 
 ```
-<script type="text" src="recursive-diff.min.js"/>
+<script type="text" src="https://unpkg.com/recursive-diff@1.0.0/dist/recursive-diff.min.js"/>
 <script type="text/javascript">
 const ob1 = {a:1};
 const ob2 = {a:2};
