@@ -68,10 +68,17 @@ describe('diff tests', () => {
     delta = diff.getDiff(d, e);
     c = diff.applyDiff(d, delta);
     assert.deepEqual(e, c);
+  });
 
+  it('testing undefined flipped', () => {
+    let d;
+    const e = {
+      a: '10',
+      b: '40',
+    };
     delta = diff.getDiff(e, d);
     c = diff.applyDiff(e, delta);
-    assert.deepEqual(d, c);
+    assert.equal(d, c);
   });
 
   it('testing Undefined, once more :) ', () => {
@@ -135,7 +142,7 @@ describe('diff tests', () => {
       b: '20',
     };
     delta = diff.getDiff(a, b);
-    assert.deepEqual(delta, {}); // no diff as dates are same
+    assert.deepEqual(delta, []); // no diff as dates are same
   });
 
   it('testing date diffs ', () => {
@@ -180,7 +187,7 @@ describe('diff tests', () => {
       d: null,
     };
     delta = diff.getDiff(a, b);
-    c = diff.applyDiff(a, delta);
+    c = diff.applyDiff(a, delta, () => {});
     assert.deepEqual(b, c);
   });
 });

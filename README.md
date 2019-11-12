@@ -2,156 +2,201 @@
   [![NPM Downloads][downloads-image]][downloads-url]
   [![Build][travis-image]][travis-url]
   [![Coverage Status][coveralls-image]][coveralls-url]
+  [![Dependency Status](https://david-dm.org/cosmicanant/recursive-diff.svg)](https://david-dm.org/cosmicanant/recursive-diff)
 
 # Recursive-Diff
 
-##### A JavaScript library to calculate diff between two variable where variable could be any valid JavaScript data type eg: string, Boolean, number, array or object
+## A JavaScript library to find diff between two JS Objects/Array, support for complex nested JS Objects
 --------
 
-![recursive diff demo](./img/recursive-diff.png?raw=true "Sample Recursive Diff")
-
-The api returns a standard diff object having key, value pair where each key represents a '/' separated path and each value represents a change object. Path denotes where the changes has been made against the original object and change denotes the nature of change ie: which operation(add/update/delete) has been performed and what is it's new value.
+This library can be used to get diff between two JS Objects/Arrays(or other primitive values). Diff are returned in the form of Array where each ARRAY item  represents a change in the original Object/Array. A diff item can have following three properties : 
+- `path` : An array representation of nested path
+- `op` : Can be any one of the following - add, update or delete
+- `val` : New value after change
 
 ```
-diff = {
-	path : {'operation': 'add/update/delete', 'value' : 'NewValue'}  /* Value represent ChangedValue */
+const rdiff = require('recursive-diff');
+const x = { 
+  a: { 
+    b: 1,
+    c: 2,
+    d: [1] 
+  } 
 }
+const y = {
+  a: {
+    b: 2,
+    d: [1, 2],
+  },
+};
+
+const diff = rdiff.getDiff(x, y);
+/***
+Diff of x and y is: [
+  {
+    "path": [
+      "a",
+      "b"
+    ],
+    "op": "update",
+    "val": 2
+  },
+  {
+    "path": [
+      "a",
+      "c"
+    ],
+    "op": "delete"
+  },
+  {
+    "path": [
+      "a",
+      "d",
+      1
+    ],
+    "op": "add",
+    "val": 2
+  }
+]
+**/
+
+const c = diff.applyDiff(x, diff);
+assert.deepEqual(c, y);
+
 ```
 
 ## Api details: 
 
-**getDiff(ob1, ob2):** getDiff takes two arguments and return their diff.
+- **`getDiff(x, y)`:** `getDiff` takes two arguments `x` and `y` and return their diff. `x` and `y` can be Array/Object or even other primitive types such as number, boolean or string.
 
-**applyDiff (ob1, diff, callback ):** applyDiff takes three arguments: 1. original object, 2. diff object 3. callback function (optional). This method returns a new object after applying diff on original object. Callback can give a chance to API user so that object can be stamped with some label or a new properties can be added which may be useful to trace the changes while traversing the resulting object. 
+- **`applyDiff (x, diff, visitorCallbackFn )`**: `applyDiff` takes three arguments:
+  - x: original value,
+  - diff: diff returned by `getDiff` API
+  - visitorCallbackFn (optional): This callback function is called at each depth level while applying the diff. It can be used to stamp the mutation path with some informative labels( eg: `{ isMutated: true}`) by assigning new properties. For more details, please check the examples directory of this repo.
 
-## ChangeLog
-- **0.1.1** - Added support of **null** value for any key in a object.
 
-- **0.1.2** - Added support of an Optional  **callBack** function in applyDiff method and improving tests. Please check the sample code to know how to use callback. Thanks to Isabella Cerbino's contribution ( https://github.com/IsabellaCerbino ) .
+## Using recursive diff library in Node:
+- Install library using the command : `npm install recursive-diff`
+- sample code is given below
+    ```
+    const diff = require('recursive-diff');
+    const ob1 = {a:1};
+    const ob2 = {a:2};
+    const delta = diff.getDiff(ob1,ob2);
+    const ob3 = diff.applyDiff(ob1, delta);
+    assert.deepEqual(ob3, ob2);
 
-- **0.1.4** - Improved error handling, included stack trace in errors. Credits: Giannis Poulis
-( https://github.com/ioanniswd )
+    ```
 
-- **0.2.0** - Added support for `DATE` type
+## Using recursive diff library in the Browser: 
 
-##Using recursive diff library in Node:
-
-First you need to install recursive diff libray into Node using  **npm install recursive-diff** and then you can use following code block.
-
-```
-var diff = require('recursive-diff');
-var ob1 = {a:1};
-var ob2 = {a:2};
-var delta = diff.getDiff(ob1,ob2);
-var ob3 = diff.applyDiff(ob1, delta);//expect ob3 is deep equal to ob2
-
-```
-
-##Using recursive diff library in Browser: 
-
-Include recursive-diff library into your html file using script tag and then you can access recursive-diff api  as below.
+`'dist/recursive-diff.min.js'` can be directly used into a HTML page. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
 
 ```
-<script type="text" src="index.js"/>
+<script type="text" src="recursive-diff.min.js"/>
 <script type="text/javascript">
-var ob1 = {a:1};
-var ob2 = {a:2};
-var delta = diff.getDiff(ob1,ob2);
-var ob3 = diff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
+const ob1 = {a:1};
+const ob2 = {a:2};
+const delta = recursiveDiff.getDiff(ob1,ob2);
+const ob3 = recursiveDiff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
 </script>
 ```
 
 ## Tests
-run **npm test**
+Unit test can be run using the command `npm test`
 
 ## Examples:
----------
+You can find more examples in the example folder of this repo. Few of the examples are listed below.
+
 ```
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-console */
+import { getDiff, applyDiff } from '../dist/recursive-diff';
 
-//examples 
-var diff = require('recursive-diff');
-var a, b, c, delta ;
-//testing primitive data type
-a = 3 ;
+let [a, b, c, delta] = [];
+// testing primitive data type
+a = 3;
 b = 10;
-delta = diff.getDiff(a, b);
-console.log(delta) ; // Output: {'/', {operation: update, value: 10}}
-c = diff.applyDiff(a, delta);
-console.log(c); //Output: 10
- 
-//testing array
-a = [1,2] ;
-b = [1,30,40] ;
-delta = diff.getDiff(a, b);
+delta = getDiff(a, b);
 console.log(delta);
-/*** Output: 
-{
-    '/1' : {operation: update, value: 30},
-    '/2' : {operation: add, value: 40} 
-}
+// Output: [{path: [], op: 'update', val: 10}]
+c = applyDiff(a, delta);
+console.log(c); // Output: 10
 
-***/
-c = diff.applyDiff(a, delta);
-console.log(c) ; //Output: [1,30,40]
+// testing array
+a = [1, 2];
+b = [1, 30, 40];
+delta = getDiff(a, b);
+console.log(delta);
+/** *
+Output:
+[
+  { path: [1], op: 'update', val: 30 },
+  { path: [2], op: 'add', val: 40 },
+]
+* */
+c = applyDiff(a, delta);
+console.log(c); // Output: [1,30,40]
 
-//testing object 
+// testing objects
 a = {
-    a: '10',
-    b: '20',
-    c: '30'
-} ;
+  a: '10',
+  b: '20',
+  c: '30',
+};
 b = {
-    a: '10',
-    b: '40'
-} ;
-delta = diff.getDiff(a, b);
+  a: '10',
+  b: '40',
+};
+delta = getDiff(a, b);
 console.log(delta);
-/*** Output:
-{
-   '/b' : {operation: 'update', value:'40'},
-   '/c' : {operation: 'delete'}
-}
-**/
-c = diff.applyDiff(a, delta);
-console.log(c); //Output: {a:'10', 'b':40}
+/** * Output:
+[
+  { path: ['b'], op: 'update', val: 40 },
+  { path: ['c'], op: 'delete', val: undefined },
+]
+* */
+c = applyDiff(a, delta);
+console.log(c); // Output: {a:'10', 'b':40}
 
-//testing complex deep object
+// testing complex deep object
 a = {
-    b: [1,2,[3,4]],
-    c: {
-        c1 : 20,
-        c2 : {
-            c21: 'hello'
-        },
-        c3: 'India'
-    }
-} ;
+  b: [1, 2, [3, 4]],
+  c: {
+    c1: 20,
+    c2: {
+      c21: 'hello',
+    },
+    c3: 'India',
+  },
+};
 b = {
-    b: [1,2,[4]],
-    c: {
-        c1 : 20,
-        c2 : {
-            c21: 'hi',
-            c22: 'welcome'
-        },
-        c3: 'cosmic'
-    }
-} ;
+  b: [1, 2, [4]],
+  c: {
+    c1: 20,
+    c2: {
+      c21: 'hi',
+      c22: 'welcome',
+    },
+    c3: 'cosmic',
+  },
+};
 
-delta = diff.getDiff(a, b);
+delta = getDiff(a, b);
 console.log(delta);
-/*** Output:
-{ 
-  '/b/2/0': { operation: 'update', value: 4 },
-  '/b/2/1': { operation: 'delete' },
-  '/c/c2/c22': { operation: 'add', value: 'welcome' },
-  '/c/c2/c21': { operation: 'update', value: 'hi' },
-  '/c/c3': { operation: 'update', value: 'cosmic' } 
-}
-***/
-c = diff.applyDiff(a, delta);
-console.log(c) ;
-/***Output
+/**
+Output:
+[
+  { path: ['b', 2, 0], op: 'update', val: 4 },
+  { path: ['b', 2, 1], op: 'delete', val: undefined },
+  { path: ['c', 'c2', 'c21'], op: 'update', val: 'hi' },
+  { path: ['c', 'c2', 'c22'], op: 'add', val: 'welcome' },
+  { path: ['c', 'c3'], op: 'update', val: 'cosmic' },
+]
+* */
+c = applyDiff(a, delta);
+console.log(c);
+/** *Output
  {
     b: [1,2,[4]],
     c: {
@@ -163,30 +208,7 @@ console.log(c) ;
         c3: 'cosmic'
     }
 }
-**/
-
-//how to use optional callback function in applyDiff function
-var a = { 'a1' : { 'a11' : { 'a111' : 'old value'} } };
-var b = { 'a1' : { 'a11' : {'a111' : 'updated value' } } };
-var callback = function(ob){
-   if(ob instance of Object){
-   	ob.__isVisited = true;
-   }
-}
-diffOb = diff.getDiff( a, b) ;
-var c = diff.applyDiff(a, diffOb, callBack) ;
-
-// 'c' value will look like:
-c = {
-    '__isVisited' : true,
-    'a1' : {
-        '__isVisited' : true,
-        'a11' : {
-            '__isVisited' : true,
-            'a111' : 'old value'
-        }
-    }
-}
+* */
 
 ```
 

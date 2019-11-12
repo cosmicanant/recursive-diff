@@ -10,7 +10,7 @@ describe('diff error tests', () => {
 
     const delta = null;
 
-    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'No diff object is provided, Nothing to apply');
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid diff format');
   });
 
   it('Invalid operation', () => {
@@ -19,11 +19,8 @@ describe('diff error tests', () => {
       w: '20',
     };
 
-    const delta = {
-      '/b': { operation: 'invalid' },
-    };
-
-    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid operation: "invalid"');
+    const delta = [{path: ['b'], op: 'invalid'}];
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Unsupported operation provided into diff object');
   });
 
   it('Invalid path (Not starting with slash)', () => {
@@ -32,21 +29,15 @@ describe('diff error tests', () => {
       w: '20',
     };
 
-    const delta = {
-      not_valid: { operation: 'update' },
-    };
-
+    const delta = [{ path: 'not_valid', op: 'update' }];
     expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Diff path: "not_valid" is not valid');
   });
 
   it('Invalid value for operation', () => {
     const obj = null;
 
-    const delta = {
-      '/c': { operation: 'update', value: 'some value' },
-    };
-
-    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid path: "/c" for object: null');
+    const delta = [{ path: [null], op: 'update' }];
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Invalid path: "" for object: null');
   });
 
   it('Invalid path (One key in path is empty)', () => {
@@ -55,11 +46,9 @@ describe('diff error tests', () => {
       w: '20',
     };
 
-    const delta = {
-      '/c//w': { operation: 'update' },
-    };
+    const delta = [{ path: ['a', null, 'b'], op: 'update' }];
 
-    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, `Invalid path: "/c//w" for object: ${JSON.stringify(obj, null, 2)}`);
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, `Invalid path: "a,,b" for object: ${JSON.stringify(obj, null, 2)}`);
   });
 
   it('Delete for invalid path for object', () => {
@@ -68,10 +57,18 @@ describe('diff error tests', () => {
       w: '20',
     };
 
-    const delta = {
-      '/not_found/w': { operation: 'delete' },
+    const delta = [{ path: ['a', 'b'], op: 'delete' }];
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, `Invalid path: "a,b" for object: ${JSON.stringify(obj, null, 2)}`);
+  });
+
+  it('update op should throw error if invalid path provided', () => {
+    const obj = {
+      a: {
+        b: 2,
+      },
     };
 
-    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, `Invalid path: "/not_found/w" for object: ${JSON.stringify(obj, null, 2)}`);
+    const delta = [{ path: ['a', null, 'd'], op: 'update' }];
+    expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, `Invalid path: "a,,d" for object: ${JSON.stringify(obj, null, 2)}`);
   });
 });
