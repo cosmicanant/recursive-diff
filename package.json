@@ -1,6 +1,6 @@
 {
   "name": "recursive-diff",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Find diff between any two variables where variables be any valid JavaScript data type like string, numeric, array or object",
   "main": "src/recursive-diff.js",
   "browser": "dist/recursive-diff.min.js",

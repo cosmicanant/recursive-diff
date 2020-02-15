@@ -11,3 +11,4 @@
   - introduced Array based path
   - Refactored code, improved code coverage
   - integrated repo badges
+- 1.0.1 - security patch and Updated README
