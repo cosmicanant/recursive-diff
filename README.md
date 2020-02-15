@@ -60,7 +60,7 @@ Diff of x and y is: [
 ]
 **/
 
-const c = diff.applyDiff(x, diff);
+const c = rdiff.applyDiff(x, diff);
 assert.deepEqual(c, y);
 
 ```
@@ -90,10 +90,10 @@ assert.deepEqual(c, y);
 
 ## Using recursive diff library in the Browser: 
 
-`'dist/recursive-diff.min.js'` can be directly injected into a HTML page using the URL `https://unpkg.com/recursive-diff@1.0.0/dist/recursive-diff.min.js`. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
+`'dist/recursive-diff.min.js'` can be directly injected into a HTML page using the URL `https://unpkg.com/recursive-diff@1.0.1/dist/recursive-diff.min.js`. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
 
 ```
-<script type="text" src="https://unpkg.com/recursive-diff@1.0.0/dist/recursive-diff.min.js"/>
+<script type="text" src="https://unpkg.com/recursive-diff@1.0.1/dist/recursive-diff.min.js"/>
 <script type="text/javascript">
 const ob1 = {a:1};
 const ob2 = {a:2};
@@ -103,7 +103,7 @@ const ob3 = recursiveDiff.applyDiff(ob1, delta); //expect ob3 is deep equal to o
 ```
 
 ## Tests
-Unit test can be run using the command `npm test`
+Unit test can be run using the command `npm test`. This repo has more than 99% code coverage.
 
 ## Examples:
 You can find more examples in the example folder of this repo. Few of the examples are listed below.

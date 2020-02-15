@@ -12,3 +12,5 @@
   - Refactored code, improved code coverage
   - integrated repo badges
 - 1.0.1 - security patch and Updated README
+- 1.0.2 - Updated README
+
