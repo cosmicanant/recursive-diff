@@ -6,7 +6,7 @@
 
 # Recursive-Diff
 
-## A JavaScript library to find diff between two JS Objects/Array, support for complex nested JS Objects
+## A JavaScript library (with TypeScript support) to find diff between two JS Objects/Array, support for complex nested JS Objects
 --------
 
 This library can be used to get diff between two JS Objects/Arrays(or other primitive values). Diff are returned in the form of Array where each ARRAY item  represents a change in the original Object/Array. A diff item can have following three properties : 
@@ -100,6 +100,17 @@ const ob2 = {a:2};
 const delta = recursiveDiff.getDiff(ob1,ob2);
 const ob3 = recursiveDiff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
 </script>
+```
+## Using recursive diff library in TypeScript:
+```
+import { getDiff, applyDiff, rdiffResult } from 'recursive-diff';
+
+const x = [1, 2];
+const y = [2, 3, 4];
+const diff:rdiffResult[] = getDiff([1, 2], 3);
+console.log('diff', diff);
+const final = applyDiff(x, diff);
+console.log('applydiff', final);
 ```
 
 ## Tests
