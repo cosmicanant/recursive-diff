@@ -96,7 +96,7 @@ assert.deepEqual(c, y);
 
 `'dist/recursive-diff.min.js'` can be directly injected into a HTML page using the URL `https://unpkg.com/recursive-diff@1.0.4/dist/recursive-diff.min.js`. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
 
-    <script type="text" src="https://unpkg.com/recursive-diff@1.0.2/dist/recursive-diff.min.js"/>
+    <script type="text" src="https://unpkg.com/recursive-diff@1.0.4/dist/recursive-diff.min.js"/>
     <script type="text/javascript">
     const ob1 = {a:1};
     const ob2 = {a:2};
@@ -110,7 +110,7 @@ assert.deepEqual(c, y);
 
     const x = [1, 2];
     const y = [2, 3, 4];
-    const diff:rdiffResult[] = getDiff([1, 2], 3);
+    const diff:rdiffResult[] = getDiff(x, y);
     console.log('diff', diff);
     const final = applyDiff(x, diff);
     console.log('applydiff', final);
