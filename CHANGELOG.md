@@ -11,6 +11,7 @@
 -   1.0.2 - Updated README
 -   1.0.3 - Added support for typescript
 -   1.0.4 - Updated README
+-   1.0.5 - Updated README
 
 [1]: https://github.com/IsabellaCerbino
 
