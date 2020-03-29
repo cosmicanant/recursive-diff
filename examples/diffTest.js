@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
-import { getDiff, applyDiff } from '../dist/recursive-diff';
+const { getDiff, applyDiff } = require('../src/recursive-diff');
 
 let [a, b, c, delta] = [];
 // testing primitive data type

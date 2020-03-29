@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "test": "NODE_ENV=test mocha --timeout 10000 test/**/*.spec.js --reporter spec",
-    "lint": "eslint src",
+    "lint": "eslint src test",
     "build": "webpack --config webpack.config.js",
     "build:dev": "webpack --config webpack.dev.config.js",
     "coverage": "nyc --reporter=lcov npm run test"

@@ -1,7 +1,7 @@
-node_modules
+/node_modules
 .prettierrc
 .nyc_output
-coverage
-test.html
-test.js
-npm-debug.log
+/coverage
+/test.html
+/test.js
+/npm-debug.log

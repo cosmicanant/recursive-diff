@@ -19,7 +19,7 @@ describe('diff error tests', () => {
       w: '20',
     };
 
-    const delta = [{path: ['b'], op: 'invalid'}];
+    const delta = [{ path: ['b'], op: 'invalid' }];
     expect(diff.applyDiff.bind(diff.applyDiff, obj, delta)).to.throw(Error, 'Unsupported operation provided into diff object');
   });
 

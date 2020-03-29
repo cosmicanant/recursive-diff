@@ -85,10 +85,10 @@ function getDiff(x, y, path, diff) {
   const currDiff = diff || [];
   if (isTraversalNeeded(type1, type2)) {
     const iterator = getKeys(x, y, type1).values();
-    let key;
-    // eslint-disable-next-line no-cond-assign
-    while ((key = iterator.next().value) != null) {
+    let key = iterator.next().value;
+    while (key != null) {
       getDiff(x[key], y[key], currPath.concat(key), currDiff);
+      key = iterator.next().value;
     }
   } else {
     compareValuesAndGetDiff(x, y, type1, type2, path, currDiff);
@@ -105,15 +105,15 @@ const opHandlers = {
 
 function applyDiff(x, diff, visitorCallback) {
   if (!(diff instanceof Array)) throw new Error(errors.INVALID_DIFF_FORMAT);
+  let y = x;
   diff.forEach((diffItem) => {
     const { op, val, path } = diffItem;
     if (!opHandlers[op]) {
       throw new Error(errors.INVALID_DIFF_OP);
     }
-    // eslint-disable-next-line no-param-reassign
-    x = opHandlers[op](x, path, val, visitorCallback);
+    y = opHandlers[op](y, path, val, visitorCallback);
   });
-  return x;
+  return y;
 }
 
 module.exports = {

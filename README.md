@@ -9,19 +9,19 @@
 ## A JavaScript library (with TypeScript support) to find diff between two JS Objects/Array, support for complex nested JS Objects
 --------
 
-This library can be used to get diff between two JS Objects/Arrays(or other primitive values). Diff are returned in the form of Array where each ARRAY item  represents a change in the original Object/Array. A diff item can have following three properties : 
-- `path` : An array representation of nested path
-- `op` : Can be any one of the following - add, update or delete
-- `val` : New value after change
+This library can be used to get diff between two JS Objects/Arrays(or other primitive values). Diff are returned in the form of Array where each ARRAY item  represents a change in the original Object/Array. A diff item can have following three properties:
+- `path`: An array representation of nested path
+- `op`: Can be any one of the following - add, update or delete
+- `val`: New value after change
 
 ```
 const rdiff = require('recursive-diff');
-const x = { 
-  a: { 
+const x = {
+  a: {
     b: 1,
     c: 2,
-    d: [1] 
-  } 
+    d: [1]
+  }
 }
 const y = {
   a: {
@@ -65,17 +65,17 @@ assert.deepEqual(c, y);
 
 ```
 
-## Api details: 
+## Api details
 
 - **`getDiff(x, y)`:** `getDiff` takes two arguments `x` and `y` and return their diff. `x` and `y` can be Array/Object or even other primitive types such as number, boolean or string.
 
-- **`applyDiff (x, diff, visitorCallbackFn )`**: `applyDiff` takes three arguments:
+- **`applyDiff (x, diff, visitorCallbackFn)`** `applyDiff` takes three arguments:
   - x: original value,
   - diff: diff returned by `getDiff` API
-  - visitorCallbackFn (optional): This callback function is called at each depth level while applying the diff. It can be used to stamp the mutation path with some informative labels( eg: `{ isMutated: true}`) by assigning new properties. For more details, please check the examples directory of this repo.
+  - visitorCallbackFn (optional): This callback function is called at each depth level while applying the diff. It can be used to mark the mutation path with some meta properties eg: `{ isMutated: true }`. For more details, please check the examples directory of this repo.
 
 
-## Using recursive diff library in Node:
+## Using recursive diff library in Node
 - Install library using the command : `npm install recursive-diff`
 - sample code is given below
     ```
@@ -88,7 +88,7 @@ assert.deepEqual(c, y);
 
     ```
 
-## Using recursive diff library in the Browser: 
+## Using recursive diff library in the Browser
 
 `'dist/recursive-diff.min.js'` can be directly injected into a HTML page using the URL `https://unpkg.com/recursive-diff@1.0.2/dist/recursive-diff.min.js`. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
 
@@ -101,7 +101,7 @@ const delta = recursiveDiff.getDiff(ob1,ob2);
 const ob3 = recursiveDiff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
 </script>
 ```
-## Using recursive diff library in TypeScript:
+## Using recursive diff library in TypeScript
 ```
 import { getDiff, applyDiff, rdiffResult } from 'recursive-diff';
 
@@ -116,7 +116,7 @@ console.log('applydiff', final);
 ## Tests
 Unit test can be run using the command `npm test`. This repo has more than 99% code coverage.
 
-## Examples:
+## Examples
 You can find more examples in the example folder of this repo. Few of the examples are listed below.
 
 ```
