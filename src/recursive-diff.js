@@ -41,28 +41,18 @@ function areEqual(x, y, type1, type2) {
   return checkEqualityForComplexTypes[type1] ? checkEqualityForComplexTypes[type1](x, y) : x === y;
 }
 
-function compareValuesAndGetDiff(x, y, type1, type2, path, diff) {
+function computeOp(x, y, type1, type2) {
+  let op;
   if (type1 === types.UNDEFINED && type2 !== types.UNDEFINED) {
-    diff.push({
-      path,
-      op: 'add',
-      val: y,
-    });
+    op = 'add';
   } else if (type1 !== types.UNDEFINED && type2 === types.UNDEFINED) {
-    diff.push({
-      path,
-      op: 'delete',
-      val: y,
-    });
+    op = 'delete';
   } else if (!(areEqual(x, y, type1, type2))) {
-    diff.push({
-      path,
-      op: 'update',
-      val: y,
-    });
+    op = 'update';
   } else {
     utils.noop();
   }
+  return op;
 }
 
 function getKeys(x, y, type) {
@@ -78,7 +68,21 @@ function getKeys(x, y, type) {
   return keys;
 }
 
-function getDiff(x, y, path, diff) {
+function makeDiff(x, y, op, path, keepOldVal) {
+  const diffOb = {
+    op,
+    path,
+  };
+  if (op === 'add' || op === 'update') {
+    diffOb.val = y;
+  }
+  if (keepOldVal && op !== 'add') {
+    diffOb.oldVal = x;
+  }
+  return diffOb;
+}
+
+function privateGetDiff(x, y, keepOldVal, path, diff) {
   const type1 = getType(x);
   const type2 = getType(y);
   const currPath = path || [];
@@ -87,15 +91,17 @@ function getDiff(x, y, path, diff) {
     const iterator = getKeys(x, y, type1).values();
     let key = iterator.next().value;
     while (key != null) {
-      getDiff(x[key], y[key], currPath.concat(key), currDiff);
+      privateGetDiff(x[key], y[key], keepOldVal, currPath.concat(key), currDiff);
       key = iterator.next().value;
     }
   } else {
-    compareValuesAndGetDiff(x, y, type1, type2, path, currDiff);
+    const op = computeOp(x, y, type1, type2);
+    if (op != null) {
+      currDiff.push(makeDiff(x, y, op, path, keepOldVal));
+    }
   }
   return currDiff;
 }
-
 
 const opHandlers = {
   add: utils.setValueByPath,
@@ -103,7 +109,7 @@ const opHandlers = {
   delete: utils.deleteValueByPath,
 };
 
-function applyDiff(x, diff, visitorCallback) {
+function privateApplyDiff(x, diff, visitorCallback) {
   if (!(diff instanceof Array)) throw new Error(errors.INVALID_DIFF_FORMAT);
   let y = x;
   diff.forEach((diffItem) => {
@@ -117,6 +123,10 @@ function applyDiff(x, diff, visitorCallback) {
 }
 
 module.exports = {
-  getDiff,
-  applyDiff,
+  getDiff(x, y, keepOldValInDiff = false) {
+    return privateGetDiff(x, y, keepOldValInDiff);
+  },
+  applyDiff(x, diff, visitorCallback) {
+    return privateApplyDiff(x, diff, visitorCallback);
+  },
 };

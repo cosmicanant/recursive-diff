@@ -11,11 +11,13 @@ declare namespace rdiff {
     op: 'update';
     path: Array<string | number>;
     val: any;
+    oldVal?: any;
   } | {
     op: 'delete';
     path: Array<string | number>;
     val: any;
+    oldVal?: any;
   }
-  export function getDiff(A: any, B: any): rdiffResult[];
+  export function getDiff(A: any, B: any, C?: Boolean): rdiffResult[];
   export function applyDiff(A: any, B: rdiffResult[], C?: Function): any;
 }

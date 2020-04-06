@@ -72,6 +72,8 @@ assert.deepEqual(c, y);
 
 -   **`getDiff(x, y)`:** `getDiff` takes two arguments `x` and `y` and return their diff. `x` and `y` can be Array/Object or even other primitive types such as number, boolean or string.
 
+> Notes: `getDiff` also takes a third optional boolen parameter, `keepOldValueInDiff` which if set to true, every diff value will have an additional property `oldValue` which will denote the old value before mutation.
+
 -   **`applyDiff (x, diff, visitorCallbackFn)`** `applyDiff` takes three arguments:
     -   x: original value,
     -   diff: diff returned by `getDiff` API
@@ -94,9 +96,9 @@ assert.deepEqual(c, y);
 
 ## Using recursive diff library in the Browser
 
-`'dist/recursive-diff.min.js'` can be directly injected into a HTML page using the URL `https://unpkg.com/recursive-diff@1.0.4/dist/recursive-diff.min.js`. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
+`'dist/recursive-diff.min.js'` can be directly injected into a HTML page using the URL `https://unpkg.com/recursive-diff@latest/dist/recursive-diff.min.js`. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
 
-    <script type="text" src="https://unpkg.com/recursive-diff@1.0.4/dist/recursive-diff.min.js"/>
+    <script type="text" src="https://unpkg.com/recursive-diff@latest/dist/recursive-diff.min.js"/>
     <script type="text/javascript">
     const ob1 = {a:1};
     const ob2 = {a:2};
@@ -141,12 +143,12 @@ console.log(c); // Output: 10
 // testing array
 a = [1, 2];
 b = [1, 30, 40];
-delta = getDiff(a, b);
+delta = getDiff(a, b, true); // third parameter : keepOldValInDiff, see output below
 console.log(delta);
 /** *
 Output:
 [
-  { path: [1], op: 'update', val: 30 },
+  { path: [1], op: 'update', val: 30, oldVal: 2 },
   { path: [2], op: 'add', val: 40 },
 ]
 * */

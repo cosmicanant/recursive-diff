@@ -12,6 +12,7 @@
 -   1.0.3 - Added support for typescript
 -   1.0.4 - Updated README
 -   1.0.5 - Updated README
+-   1.0.6 - Added support for including `oldVal` in the diff object using an optional third parameter in the `getDiff` API
 
 [1]: https://github.com/IsabellaCerbino
 

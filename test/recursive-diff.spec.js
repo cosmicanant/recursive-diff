@@ -190,4 +190,53 @@ describe('diff tests', () => {
     c = diff.applyDiff(a, delta, () => {});
     assert.deepEqual(b, c);
   });
+  it('testing diff format if oldValue is needed into diff', () => {
+    a = {
+      a: {
+        b: 1,
+        c: 2,
+        d: [1],
+      },
+    };
+    b = {
+      a: {
+        b: 2,
+        d: [1, 2],
+      },
+    };
+    const expectedDiff = [
+      {
+        op: 'update',
+        path: [
+          'a',
+          'b',
+        ],
+        val: 2,
+        oldVal: 1,
+      },
+      {
+        op: 'delete',
+        path: [
+          'a',
+          'c',
+        ],
+        oldVal: 2,
+      },
+      {
+        op: 'add',
+        path: [
+          'a',
+          'd',
+          1,
+        ],
+        val: 2,
+      },
+    ];
+    delta = diff.getDiff(a, b, true); // old value in the diff
+    assert.deepEqual(delta, expectedDiff);
+    delete expectedDiff[0].oldVal;
+    delete expectedDiff[1].oldVal;
+    delta = diff.getDiff(a, b); // no old value in the diff
+    assert.deepEqual(delta, expectedDiff);
+  });
 });
