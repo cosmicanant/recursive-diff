@@ -13,6 +13,7 @@
 -   1.0.4 - Updated README
 -   1.0.5 - Updated README
 -   1.0.6 - Added support for including `oldVal` in the diff object using an optional third parameter in the `getDiff` API
+-   1.0.7 - Improving docs
 
 [1]: https://github.com/IsabellaCerbino
 

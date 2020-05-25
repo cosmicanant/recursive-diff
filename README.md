@@ -19,23 +19,23 @@ This library can be used to get diff between two JS Objects/Arrays(or other prim
 
 ```
 const rdiff = require('recursive-diff');
-const x = {
+const initialVal = {
   a: {
     b: 1,
     c: 2,
     d: [1]
   }
 }
-const y = {
+const changedVal = {
   a: {
     b: 2,
     d: [1, 2],
   },
 };
 
-const diff = rdiff.getDiff(x, y);
+const diff = rdiff.getDiff(initialVal, changedVal);
 /***
-Diff of x and y is: [
+Diff of initialVal and changedVal is: [
   {
     "path": [
       "a",
@@ -63,21 +63,22 @@ Diff of x and y is: [
 ]
 **/
 
-const c = rdiff.applyDiff(x, diff);
-assert.deepEqual(c, y);
+const c = rdiff.applyDiff(initialVal, diff);
+assert.deepEqual(c, changedVal);
 
 ```
 
 ## Api details
 
--   **`getDiff(x, y)`:** `getDiff` takes two arguments `x` and `y` and return their diff. `x` and `y` can be Array/Object or even other primitive types such as number, boolean or string.
+-   **`getDiff(oldVal, newVal, keepOldVal?)`:** `getDiff` takes following parameters
+    -   `oldVal (required)`:  initial value, can be Array/Object or even primitive type such as number, boolean or string
+    -   `newVal (required)`: changed value ( required ), can be Array/Object or even primitive type such as number, boolean or string
+    -   `keepOldValueInDiff (optional)`: boolean parameter which if set to true, every diff value will have an additional property `oldValue` which will denote the old value before mutation
 
-> Notes: `getDiff` also takes a third optional boolen parameter, `keepOldValueInDiff` which if set to true, every diff value will have an additional property `oldValue` which will denote the old value before mutation.
-
--   **`applyDiff (x, diff, visitorCallbackFn)`** `applyDiff` takes three arguments:
-    -   x: original value,
-    -   diff: diff returned by `getDiff` API
-    -   visitorCallbackFn (optional): This callback function is called at each depth level while applying the diff. It can be used to mark the mutation path with some meta properties eg: `{ isMutated: true }`. For more details, please check the examples directory of this repo.
+-   **`applyDiff (oldVal, diff, visitorCallbackFn?)`** `applyDiff` takes three arguments:
+    -   `oldVal (required)`: original value,
+    -   `diff (required)`: diff returned by `getDiff` API
+    -   `visitorCallbackFn (optional)`: This callback function is called at each depth level while applying the diff. It can be used to mark the mutation path with some meta properties eg: `{ isMutated: true }`. For more details, please check the examples directory of this repo.
 
 ## Using recursive diff library in Node
 
@@ -86,11 +87,11 @@ assert.deepEqual(c, y);
 
     ```
     const diff = require('recursive-diff');
-    const ob1 = {a:1};
-    const ob2 = {a:2};
-    const delta = diff.getDiff(ob1,ob2);
-    const ob3 = diff.applyDiff(ob1, delta);
-    assert.deepEqual(ob3, ob2);
+    const oldVal = {a:1};
+    const newVal = {a:2};
+    const delta = diff.getDiff(oldVal, newVal);
+    const ob3 = diff.applyDiff(oldVal, delta);
+    assert.deepEqual(ob3, newVal);
 
     ```
 
@@ -100,22 +101,22 @@ assert.deepEqual(c, y);
 
     <script type="text" src="https://unpkg.com/recursive-diff@latest/dist/recursive-diff.min.js"/>
     <script type="text/javascript">
-    const ob1 = {a:1};
-    const ob2 = {a:2};
-    const delta = recursiveDiff.getDiff(ob1,ob2);
-    const ob3 = recursiveDiff.applyDiff(ob1, delta); //expect ob3 is deep equal to ob2
+    const oldVal = { a: 1 };
+    const newVal = { a: 2 };
+    const delta = recursiveDiff.getDiff(oldVal, newVal);
+    const ob3 = recursiveDiff.applyDiff(oldVal, delta); //expect ob3 is deep equal to newVal
     </script>
 
 ## Using recursive diff library in TypeScript
 
     import { getDiff, applyDiff, rdiffResult } from 'recursive-diff';
 
-    const x = [1, 2];
-    const y = [2, 3, 4];
-    const diff:rdiffResult[] = getDiff(x, y);
+    const oldVal = [1, 2];
+    const newVal = [2, 3, 4];
+    const diff:rdiffResult[] = getDiff(oldVal, newVal);
     console.log('diff', diff);
-    const final = applyDiff(x, diff);
-    console.log('applydiff', final);
+    const final = applyDiff(oldVal, diff);
+    console.log('applydiff', final); // final should deep equal to newVal
 
 ## Tests
 
