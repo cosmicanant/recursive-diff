@@ -56,16 +56,12 @@ function computeOp(x, y, type1, type2) {
 }
 
 function getKeys(x, y, type) {
-  let keys;
-  if (type === types.ITERABLE_OBJECT) {
-    keys = new Set(Object.keys(x).concat(Object.keys(y)));
-  } else if (type === types.ARRAY) {
-    keys = x.length > y.length ? new Array(x.length) : new Array(y.length);
-    keys = keys.fill(0, 0);
-    keys = keys.map((el, i) => i);
-    keys = new Set(keys);
+  if (type === types.ARRAY) {
+    const keys = x.length > y.length ? new Array(x.length) : new Array(y.length);
+    keys.fill(0);
+    return new Set(keys.map((_, i) => i));
   }
-  return keys;
+  return new Set(Object.keys(x).concat(Object.keys(y)));
 }
 
 function makeDiff(x, y, op, path, keepOldVal) {
@@ -89,10 +85,18 @@ function privateGetDiff(x, y, keepOldVal, path, diff) {
   const currDiff = diff || [];
   if (isTraversalNeeded(type1, type2)) {
     const iterator = getKeys(x, y, type1).values();
-    let key = iterator.next().value;
-    while (key != null) {
-      privateGetDiff(x[key], y[key], keepOldVal, currPath.concat(key), currDiff);
-      key = iterator.next().value;
+    let { value, done } = iterator.next();
+    while (!done) {
+      if (!(Object.prototype.hasOwnProperty.call(x, value))) {
+        currDiff.push(makeDiff(x[value], y[value], 'add', currPath.concat(value), keepOldVal));
+      } else if (!(Object.prototype.hasOwnProperty.call(y, value))) {
+        currDiff.push(makeDiff(x[value], y[value], 'delete', currPath.concat(value), keepOldVal));
+      } else {
+        privateGetDiff(x[value], y[value], keepOldVal, currPath.concat(value), currDiff);
+      }
+      const curr = iterator.next();
+      value = curr.value;
+      done = curr.done;
     }
   } else {
     const op = computeOp(x, y, type1, type2);

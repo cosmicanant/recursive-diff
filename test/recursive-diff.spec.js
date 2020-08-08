@@ -239,4 +239,33 @@ describe('diff tests', () => {
     delta = diff.getDiff(a, b); // no old value in the diff
     assert.deepEqual(delta, expectedDiff);
   });
+
+  it('testing array diff in case last elem is undefined', () => {
+    a = [1, undefined];
+    b = [1];
+    let expectedDiff = [
+      {
+        op: 'delete',
+        path: [
+          1,
+        ],
+        oldVal: undefined,
+      },
+    ];
+    delta = diff.getDiff(a, b, true); // old value in the diff
+    //  assert.deepEqual(delta, expectedDiff);
+    a = [1];
+    b = [1, undefined];
+    delta = diff.getDiff(a, b, true); // old value in the diff
+    expectedDiff = [
+      {
+        op: 'add',
+        path: [
+          1,
+        ],
+        val: undefined,
+      },
+    ];
+    assert.deepEqual(delta, expectedDiff);
+  });
 });

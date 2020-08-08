@@ -1,6 +1,6 @@
 {
   "name": "recursive-diff",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Find diff between any two variables where variables be any valid JavaScript data type like string, numeric, array or object",
   "main": "src/recursive-diff.js",
   "types": "src/index.d.ts",
@@ -21,7 +21,8 @@
     "lint": "eslint src test",
     "build": "webpack --config webpack.config.js",
     "build:dev": "webpack --config webpack.dev.config.js",
-    "coverage": "nyc --reporter=lcov npm run test"
+    "coverage": "nyc --reporter=lcov npm run test",
+    "audit": "npm audit"
   },
   "repository": {
     "type": "git",
@@ -33,7 +34,7 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "istanbul": "^0.4.5",
-    "mocha": "^7.1.1",
+    "mocha": "^7.2.0",
     "nyc": "^15.0.0",
     "pre-commit": "^1.2.2",
     "webpack": "^4.42.1",
@@ -70,7 +71,8 @@
   "precommit": {
     "run": [
       "lint",
-      "test"
+      "test",
+      "audit"
     ]
   }
 }

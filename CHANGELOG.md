@@ -14,7 +14,10 @@
 -   1.0.5 - Updated README
 -   1.0.6 - Added support for including `oldVal` in the diff object using an optional third parameter in the `getDiff` API
 -   1.0.7 - Improving docs
+-   1.0.8 - fixed [Bug][3]
 
 [1]: https://github.com/IsabellaCerbino
 
 [2]: https://github.com/ioanniswd
+
+[3]: https://github.com/cosmicanant/recursive-diff/issues/12
