@@ -17,7 +17,7 @@ This library can be used to get diff between two JS Objects/Arrays(or other prim
 -   `val`: New value after change
 
 
-```
+```js
 const rdiff = require('recursive-diff');
 const initialVal = {
   a: {
@@ -85,38 +85,41 @@ assert.deepEqual(c, changedVal);
 -   Install library using the command : `npm install recursive-diff`
 -   sample code is given below
 
-    ```
-    const diff = require('recursive-diff');
-    const oldVal = {a:1};
-    const newVal = {a:2};
-    const delta = diff.getDiff(oldVal, newVal);
-    const ob3 = diff.applyDiff(oldVal, delta);
-    assert.deepEqual(ob3, newVal);
-
-    ```
+```js
+const diff = require('recursive-diff');
+const oldVal = {a:1};
+const newVal = {a:2};
+const delta = diff.getDiff(oldVal, newVal);
+const ob3 = diff.applyDiff(oldVal, delta);
+assert.deepEqual(ob3, newVal);
+```
 
 ## Using recursive diff library in the Browser
 
 `'dist/recursive-diff.min.js'` can be directly injected into a HTML page using the URL `https://unpkg.com/recursive-diff@latest/dist/recursive-diff.min.js`. Once it is included into the HTML file, diff API is accessible using  `window.recursiveDiff`. Example given below.
 
-    <script type="text" src="https://unpkg.com/recursive-diff@latest/dist/recursive-diff.min.js"/>
-    <script type="text/javascript">
-    const oldVal = { a: 1 };
-    const newVal = { a: 2 };
-    const delta = recursiveDiff.getDiff(oldVal, newVal);
-    const ob3 = recursiveDiff.applyDiff(oldVal, delta); //expect ob3 is deep equal to newVal
-    </script>
+```html
+<script type="text" src="https://unpkg.com/recursive-diff@latest/dist/recursive-diff.min.js"/>
+<script type="text/javascript">
+ const oldVal = { a: 1 };
+ const newVal = { a: 2 };
+ const delta = recursiveDiff.getDiff(oldVal, newVal);
+ const ob3 = recursiveDiff.applyDiff(oldVal, delta); //expect ob3 is deep equal to newVal
+</script>
+```
 
 ## Using recursive diff library in TypeScript
 
-    import { getDiff, applyDiff, rdiffResult } from 'recursive-diff';
+```js
+import { getDiff, applyDiff, rdiffResult } from 'recursive-diff';
 
-    const oldVal = [1, 2];
-    const newVal = [2, 3, 4];
-    const diff:rdiffResult[] = getDiff(oldVal, newVal);
-    console.log('diff', diff);
-    const final = applyDiff(oldVal, diff);
-    console.log('applydiff', final); // final should deep equal to newVal
+const oldVal = [1, 2];
+const newVal = [2, 3, 4];
+const diff:rdiffResult[] = getDiff(oldVal, newVal);
+console.log('diff', diff);
+const final = applyDiff(oldVal, diff);
+console.log('applydiff', final); // final should deep equal to newVal
+```
 
 ## Tests
 
@@ -126,7 +129,7 @@ Unit test can be run using the command `npm test`. This repo has more than 99% c
 
 You can find more examples in the example folder of this repo. Few of the examples are listed below.
 
-```
+```js
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-console */
 import { getDiff, applyDiff } from '../dist/recursive-diff';
