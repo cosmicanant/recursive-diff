@@ -37,8 +37,8 @@
     "mocha": "^10.1.0",
     "nyc": "^15.0.0",
     "pre-commit": "^1.2.2",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "keywords": [
     "deep",
