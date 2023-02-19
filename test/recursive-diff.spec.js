@@ -47,7 +47,6 @@ describe('diff tests', () => {
     assert.deepEqual(b, c);
   });
 
-
   it('testing Null ', () => {
     a = null;
     b = {
