@@ -17,6 +17,7 @@ const noop = () => {};
 
 const areDatesEqual = (dt1, dt2) => dt1.getTime() === dt2.getTime();
 
+// eslint-disable-next-line default-param-last
 function setValueByPath(x, path = [], value, visitorCallback) {
   if (!(isArray(path))) {
     throw new Error(`Diff path: "${path}" is not valid`);
