@@ -233,6 +233,9 @@ console.log(c);
 
 ```
 
+## Support Me
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ananteng?country.x=IN&locale.x=en_GB)
+
 [npm-image]: https://img.shields.io/npm/v/recursive-diff.svg
 
 [npm-url]: https://npmjs.org/package/recursive-diff
