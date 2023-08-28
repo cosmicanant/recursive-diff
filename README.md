@@ -75,7 +75,7 @@ assert.deepEqual(c, changedVal);
     -   `newVal (required)`: changed value ( required ), can be Array/Object or even primitive type such as number, boolean or string
     -   `keepOldValueInDiff (optional)`: boolean parameter which if set to true, every diff value will have an additional property `oldValue` which will denote the old value before mutation
 
--   **`applyDiff (oldVal, diff, visitorCallbackFn?)`** `applyDiff` takes three arguments:
+-   **`applyDiff (oldVal, diff, visitorCallbackFn?)`** `applyDiff` will apply the diff on the oldVal and update it as per the diff object. It will update the original object. It three following three arguments:
     -   `oldVal (required)`: original value,
     -   `diff (required)`: diff returned by `getDiff` API
     -   `visitorCallbackFn (optional)`: This callback function is called at each depth level while applying the diff. It can be used to mark the mutation path with some meta properties eg: `{ isMutated: true }`. For more details, please check the examples directory of this repo.
